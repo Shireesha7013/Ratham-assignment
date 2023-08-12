@@ -1,0 +1,38 @@
+# Ratham-assignment
+1. Student A logs in:
+   - API: POST /login
+   - Request body: { "id": "studentA", "password": "passwordA" }
+   - Response: { "token": "studentAToken" }
+
+2. Student A views available sessions:
+   - API: GET /sessions
+   - Request headers: { "Authorization": "Bearer studentAToken" }
+   - Response: [ { "sessionID": 1, "date": "Thursday, August 17, 2023", "time": "10:00 AM" }, { "sessionID": 2, "date": "Friday, August 18, 2023", "time": "10:00 AM" } ]
+
+3. Student A books a session:
+   - API: POST /sessions/book
+   - Request headers: { "Authorization": "Bearer studentAToken" }
+   - Request body: { "sessionID": 1 }
+   - Response: { "message": "Session booked successfully" }
+
+4. Dean logs in:
+   - API: POST /login
+   - Request body: { "id": "dean", "password": "deanPassword" }
+   - Response: { "token": "deanToken" }
+
+5. Dean views pending sessions:
+   - API: GET /sessions/pending
+   - Request headers: { "Authorization": "Bearer deanToken" }
+   - Response: [ { "studentName": "Student A", "sessionID": 1, "date": "Thursday, August 17, 2023", "time": "10:00 AM" } ]
+
+6. Student B logs in:
+   - API: POST /login
+   - Request body: { "id": "studentB", "password": "passwordB" }
+   - Response: { "token": "studentBToken" }
+
+7. Student B views available sessions and books a slot (similar to steps 2 and 3)
+
+8. Dean views pending sessions again:
+   - API: GET /sessions/pending
+   - Request headers: { "Authorization": "Bearer deanToken" }
+   { "studentName": "Student A", "sessionID": 1, "date": "Thursday, August 17, 2023", "time": "10:00 AM" }, { "studentName": "Student B",         "sessionID": 2, "date": "Friday, August 18, 2023", "time": "10:00 AM" } ]
