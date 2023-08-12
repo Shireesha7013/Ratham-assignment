@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Student Enrollment</title>
+</head>
+<body>
+  <div class="container">
+    <div id="page1" class="page">
+      <h1>Enter into Student Info System</h1>
+      <button id="enrollButton">Enroll Now!</button>
+    </div>
+    <div id="page2" class="page hidden">
+      <div id="chatbot" class="chatbot">
+        <div class="message bot">Hello, Welcome to student info system!</div>
+      </div>
+    </div>
+    <div id="page3" class="page hidden">
+      <p>Your name <span id="enrolledName"></span> aged <span id="enrolledAge"></span> has been added to the student system. You may now exit.</p>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f4f4f4;
+}
+
+.container {
+  text-align: center;
+}
+
+.page {
+  display: none;
+}
+
+.chatbot {
+  border: 2px solid #333;
+  padding: 10px;
+  max-width: 300px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.message {
+  margin: 5px 0;
+}
+
+.hidden {
+  display: none;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const enrollButton = document.getElementById('enrollButton');
+  const chatbot = document.getElementById('chatbot');
+  const enrolledName = document.getElementById('enrolledName');
+  const enrolledAge = document.getElementById('enrolledAge');
+
+  let step = 1;
+  let name = '';
+  let age = '';
+
+  enrollButton.addEventListener('click', () => {
+    if (step === 1) {
+      chatbot.innerHTML += '<div class="message bot">Enter your Name</div>';
+      step = 2;
+    }
+  });
+
+  chatbot.addEventListener('click', (event) => {
+    const target = event.target;
+    if (step === 2 && target.classList.contains('bot')) {
+      name = prompt('Enter your Name');
+      chatbot.innerHTML += `<div class="message user">You: ${name}</div>`;
+      chatbot.innerHTML += '<div class="message bot">Enter your Age</div>';
+      step = 3;
+    } else if (step === 3 && target.classList.contains('bot')) {
+      const ageOptions = Array.from({ length: 23 }, (_, i) => 18 + i);
+      const ageDropdown = `<select id="age">${ageOptions.map(option => `<option value="${option}">${option}</option>`).join('')}</select>`;
+      chatbot.innerHTML += `<div class="message user">You: ${ageDropdown}</div>`;
+      chatbot.innerHTML += '<div class="message bot">Thank you. In 5 seconds, bot will exit</div>';
+      step = 4;
+      setTimeout(() => {
+        enrolledName.textContent = name;
+        enrolledAge.textContent = age;
+        document.getElementById('page2').classList.add('hidden');
+        document.getElementById('page3').classList.remove('hidden');
+      }, 5000);
+    }
+  });
+});
